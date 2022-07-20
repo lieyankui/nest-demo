@@ -1,0 +1,1 @@
+export const USRE_REPOSITORY = 'USRE_REPOSITORY';

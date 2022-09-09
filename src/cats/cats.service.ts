@@ -1,22 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
 
-@Injectable()
+Injectable();
 export class CatsService {
   private cats: Cat[] = [];
-
-  constructor(private configService: ConfigService) {
-    console.log('configService: ', this.configService);
-  }
 
   findAll() {
     return this.cats;
   }
-
   create(cat: Cat) {
-    console.log('configService: ', this.configService);
-    this.cats.push(cat);
-    return cat;
+    if(this.cats.map(c => c.name).includes(cat.name)) {
+        throw new ConflictException({statusCode: 40901, message: "[cat has already]: aaaaaaaaa"});
+    } else {
+        this.cats.push(cat);
+        return `create ${cat.name} success`;
+    }
+  }
+  createOne(cat: Cat) {
+    throw new ForbiddenException();
   }
 }

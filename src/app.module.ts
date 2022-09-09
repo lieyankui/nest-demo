@@ -1,23 +1,32 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { CatsModule } from './cats/cat.module';
 import { DatabaseModule } from './database/database.module';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
-// import { ConfigModule } from './config/config.module';
-
-console.log('process.env: ', process.env);
+import { DogsModule } from './dogs/dogs.module';
+import MysqlConfig from './config/mysql.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [MysqlConfig],
+    }),
     // UserModule,
     CatsModule,
     // DatabaseModule,
-    // ConfigModule.register({folder: './config'})
-    ConfigModule.forRoot(),
+    DogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // 添加路由中间件
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes("/");
+  }
+}

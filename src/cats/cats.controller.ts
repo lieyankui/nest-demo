@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -16,10 +17,10 @@ import { CreateCatDto } from './dto/create-cat.dto';
 // @Controller('cats')
 @Controller('cats')
 export class CatsController {
-  constructor(private catsService: CatsService) {}
+  constructor(private cats: CatsService) {}
   @Get()
   async findAll() {
-    return this.catsService.findAll();
+    return this.cats.findAll();
   }
   @Get(':id')
   async findOne(@Param('id') id: string) {
@@ -27,8 +28,7 @@ export class CatsController {
   }
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    // console.log('createCat createCatDto: ', createCatDto);
-    return this.catsService.create(createCatDto);
+    return this.cats.create(createCatDto);
   }
 
   @Post('bulk')

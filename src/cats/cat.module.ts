@@ -3,6 +3,7 @@ import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 
+// TODO: a deep kit, it is no effective, whatever I to modify CatsService
 const mockCatsService = {
   cats: [],
   findAll: function () {
@@ -17,11 +18,11 @@ const mockCatsService = {
 @Module({
   controllers: [CatsController],
   providers: [
-    // CatsService,
-    {
-      provide: CatsService,
-      useValue: mockCatsService,
-    },
+    CatsService,
+    // {
+    //   provide: CatsService,
+    //   useValue: mockCatsService,
+    // },
   ],
 })
 export class CatsModule {}

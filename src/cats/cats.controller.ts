@@ -3,6 +3,7 @@ import {
   ConflictException,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   ParseArrayPipe,
@@ -20,6 +21,7 @@ export class CatsController {
   constructor(private cats: CatsService) {}
   @Get()
   async findAll() {
+    throw new ForbiddenException();
     return this.cats.findAll();
   }
   @Get(':id')

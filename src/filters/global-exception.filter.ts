@@ -19,11 +19,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
     const exceptionRes = exception.getResponse();
-    console.log('exceptionRes: ', exceptionRes);
     const responseBody = {
-
+      status: httpStatus,
+      ...exceptionRes
     };
-
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }

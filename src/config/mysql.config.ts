@@ -2,6 +2,6 @@ import { getEnvConfig } from '../utils';
 import { EnvConfig } from './interfaces';
 
 export default () => {
-    const envConfig = getEnvConfig<EnvConfig>();
-    return envConfig;
+    const envConfig = getEnvConfig();
+    return envConfig as EnvConfig;
 }

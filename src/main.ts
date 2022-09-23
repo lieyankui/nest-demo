@@ -2,13 +2,16 @@ import { ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './filters/global-exception.filter';
-import { logger } from './middlewares/logger.middleware';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { setupSwagger } from './swagger';
+import { getEnvConfig } from './utils';
+
+const server_port = getEnvConfig('server_port') || 3000;
+const server_prefix = getEnvConfig('server_prefix') || '';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  app.setGlobalPrefix(server_prefix);
   // 设置 swagger 文档相关配置
   setupSwagger(app);
   // 设置全局管道
@@ -19,12 +22,15 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  // 全局使用winston
+  const nestWinston = app.get('NestWinston');
+  app.useLogger(nestWinston);
   // 使用全局过滤器
   const httpAdapter = app.get(HttpAdapterHost);
   // 全局异常过滤器
-  app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
+  app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter, nestWinston.logger));
 
-  await app.listen(3000);
+  await app.listen(server_port);
 }
 
 bootstrap();

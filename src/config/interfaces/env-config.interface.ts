@@ -1,7 +1,13 @@
 export interface EnvConfig {
-    MYSQL_HOST: string;
-    MYSQL_PORT: string;
-    MYSQL_DATABASE: string;
-    MYSQL_USERNAME: string;
-    MYSQL_PASSWORD: string;
+  mysql_host: string;
+  mysql_port: string;
+  mysql_database: string;
+  mysql_username: string;
+  mysql_password: string;
+  logger_level: string;
+  logger_log_dir: string;
+  server_port: string;
+  server_prefix: string;
+  monitor_prefix: string;
+  monitor_socket_prefix: string;
 }

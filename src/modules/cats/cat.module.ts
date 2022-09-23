@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { Logger } from 'winston';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';

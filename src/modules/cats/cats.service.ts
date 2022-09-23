@@ -13,7 +13,7 @@ export class CatsService {
         throw new ConflictException({statusCode: 40901, message: "[cat has already]: aaaaaaaaa"});
     } else {
         this.cats.push(cat);
-        return `create ${cat.name} success`;
+        return cat;
     }
   }
   createOne(cat: Cat) {

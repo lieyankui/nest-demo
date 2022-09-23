@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { corsConfig } from '../config/cors.config';
-import { ANONYNOUSE_ERROR } from '../constants';
+import { corsConfig } from '../../config/cors.config';
+import { ANONYNOUSE_ERROR } from '../../constants';
 
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {

@@ -1,16 +1,21 @@
 import {
   Body,
-  ConflictException,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
+  HttpStatus,
+  Inject,
   Param,
   ParseArrayPipe,
+  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
+import { Logger } from 'winston';
+import { getUuid } from '../../utils';
 import { CatsService } from './cats.service';
 import { UpdateCatDto } from './dto';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -18,14 +23,15 @@ import { CreateCatDto } from './dto/create-cat.dto';
 // @Controller('cats')
 @Controller('cats')
 export class CatsController {
-  constructor(private cats: CatsService) {}
+  constructor(private cats: CatsService, @Inject('winston') private readonly logger: Logger) {}
   @Get()
   async findAll() {
-    throw new ForbiddenException();
+    return getUuid();
     return this.cats.findAll();
   }
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    console.log("uuid id: ", id);
     return `This action returns a #${id} cat`;
   }
   @Post()

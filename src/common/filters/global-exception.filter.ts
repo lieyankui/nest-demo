@@ -6,10 +6,12 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { Logger } from 'winston';
+import { format } from '../../utils';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost, private readonly logger: Logger) {}
   catch(exception: any, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
@@ -19,10 +21,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
     const exceptionRes = exception.getResponse();
+    const req = ctx.getRequest();
     const responseBody = {
-      status: httpStatus,
-      ...exceptionRes
+      ...exceptionRes,
+      timestamp: format(),
+      path: req.url,
+      message: Array.isArray(exceptionRes.message) ? exceptionRes.message.join(',') : exceptionRes.message,
     };
+    this.logger.error((`[global-exception.filter] error : ${JSON.stringify(responseBody)}`));
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }

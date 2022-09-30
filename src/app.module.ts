@@ -11,6 +11,7 @@ import { CorsMiddleware } from './common/middlewares/cors.middleware';
 import { OriginMiddleware } from './common/middlewares/origin.middleware';
 import { WinstonModule } from 'nest-winston';
 import { MonitorModule } from './common/modules/monitor/monitor.module';
+import { AuthModule } from './common/modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,10 +20,11 @@ import { MonitorModule } from './common/modules/monitor/monitor.module';
       load: [MysqlConfig],
     }),
     WinstonModule.forRoot(WinstonConfig()),
-    // UserModule,
+    UserModule,
     CatsModule,
     // DatabaseModule,
     DogsModule,
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {

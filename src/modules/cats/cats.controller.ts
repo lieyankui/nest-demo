@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common';
 import { Logger } from 'winston';
 import { getUuid } from '../../utils';
+import { cDecrypt, cDecrypt2, cEncrypt, cEncrypt2 } from '../../utils/bcrypt.util';
 import { CatsService } from './cats.service';
 import { UpdateCatDto } from './dto';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -31,8 +32,12 @@ export class CatsController {
   }
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    console.log("uuid id: ", id);
-    return `This action returns a #${id} cat`;
+    const encrypted = cEncrypt('wsad950123');
+    const decrypted = cDecrypt(encrypted);
+    return {
+      encrypted,
+      decrypted
+    };
   }
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {

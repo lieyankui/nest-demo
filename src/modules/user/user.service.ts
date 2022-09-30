@@ -7,21 +7,37 @@ import { USRE_REPOSITORY } from './user.constant';
 
 @Injectable()
 export class UserService {
+  users = [
+    {
+      id: 1,
+      name: 'admin',
+      pwd: '123456'
+    },
+    {
+      id: 2,
+      name: 'sysadmin',
+      pwd: '000000'
+    }
+  ];
   constructor(
-    @Inject(USRE_REPOSITORY)
-    private userRepository: Repository<User>,
+    // @Inject(USRE_REPOSITORY)
+    // private userRepository: Repository<User>,
   ) {}
 
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return this.users.push(createUserDto);
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.users;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.users.find(u => u.id === id);
+  }
+
+  findOneByUsername(name: string) {
+    return this.users.find(u => u.name === name);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

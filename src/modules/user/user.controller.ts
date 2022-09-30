@@ -5,15 +5,25 @@ import {
   Body,
   Patch,
   Param,
+  Request,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  login(@Request() req) {
+    console.log('req.user: ', req.user);
+    return req.user
+  }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
